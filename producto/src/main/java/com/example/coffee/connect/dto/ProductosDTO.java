@@ -24,7 +24,7 @@ public class ProductosDTO {
     @Min(0)
     private Integer stock;
 
-    @NotNull(message = "La categoría es obligatoria")
+    @NotNull
     private boolean isHot; // bebida caliente o no
 }
     
