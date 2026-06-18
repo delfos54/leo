@@ -1,5 +1,7 @@
 package com.example.coffee.connect.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,10 +23,20 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    @Bean
+   @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+            // 🌐 Configuración de CORS para permitir peticiones desde cualquier origen/frontend
+            .cors(cors -> cors.configurationSource(request -> {
+                var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                corsConfiguration.setAllowedOrigins(List.of("*")); // Ajustar según las URL de tu frontend
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfiguration.setAllowedHeaders(List.of("*"));
+                return corsConfiguration;
+            }))
+            // 🛡️ Deshabilitamos CSRF ya que usamos tokens JWT (Stateless)
             .csrf(csrf -> csrf.disable())
+            // 🔄 Definimos la política de sesiones como SIN ESTADO
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // 🔓 Permitimos la consulta rápida de precios para que el módulo de Pagos no rebote
