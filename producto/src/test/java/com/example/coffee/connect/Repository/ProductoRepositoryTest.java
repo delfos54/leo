@@ -14,15 +14,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest //
-@ActiveProfiles("test") //
+@DataJpaTest
+@ActiveProfiles("test")
 class ProductoRepositoryTest {
 
     @Autowired
-    private ProductoRepository repository; //
+    private ProductoRepository repository;
 
     @Test
-    void debeGuardarProducto() { //
+    void debeGuardarProducto() {
         Productos producto = new Productos();
         producto.setNombre("Gabriel García Márquez Coffee");
         producto.setDescripcion("Mezcla colombiana premium");
@@ -30,15 +30,15 @@ class ProductoRepositoryTest {
         producto.setStock(50);
         producto.setIsHot(true);
 
-        Productos guardado = repository.save(producto); //
+        Productos guardado = repository.save(producto);
 
-        assertNotNull(guardado.getId()); //
-        assertEquals("Gabriel García Márquez Coffee", guardado.getNombre()); //
+        assertNotNull(guardado.getId());
+        assertEquals("Gabriel García Márquez Coffee", guardado.getNombre());
         assertEquals(new BigDecimal("2990"), guardado.getPrecio());
     }
 
     @Test
-    void debeBuscarProductoPorId() { //
+    void debeBuscarProductoPorId() {
         Productos producto = new Productos();
         producto.setNombre("Mario Vargas Llosa Espresso");
         producto.setDescripcion("Café fuerte e intenso");
@@ -46,50 +46,50 @@ class ProductoRepositoryTest {
         producto.setStock(30);
         producto.setIsHot(true);
         
-        Productos guardado = repository.save(producto); //
+        Productos guardado = repository.save(producto);
 
-        Optional<Productos> resultado = repository.findById(guardado.getId()); //
+        Optional<Productos> resultado = repository.findById(guardado.getId());
 
-        assertTrue(resultado.isPresent()); //
-        assertEquals("Mario Vargas Llosa Espresso", resultado.get().getNombre()); //
+        assertTrue(resultado.isPresent());
+        assertEquals("Mario Vargas Llosa Espresso", resultado.get().getNombre());
         assertEquals(new BigDecimal("1500"), resultado.get().getPrecio());
     }
 
     @Test
-    void debeListarProductos() { //
+    void debeListarProductos() {
         Productos p1 = new Productos();
         p1.setNombre("Jorge Luis Borges Moka");
         p1.setPrecio(new BigDecimal("3500"));
         p1.setStock(10);
         p1.setIsHot(false);
-        repository.save(p1); //
+        repository.save(p1);
 
         Productos p2 = new Productos();
         p2.setNombre("Pablo Neruda Latte");
         p2.setPrecio(new BigDecimal("2500"));
         p2.setStock(12);
         p2.setIsHot(true);
-        repository.save(p2); //
+        repository.save(p2);
 
-        List<Productos> resultado = repository.findAll(); //
+        List<Productos> resultado = repository.findAll();
 
-        assertFalse(resultado.isEmpty()); //
-        assertTrue(resultado.size() >= 2); //
+        assertFalse(resultado.isEmpty());
+        assertTrue(resultado.size() >= 2);
     }
 
     @Test
-    void debeEliminarProducto() { //
+    void debeEliminarProducto() {
         Productos producto = new Productos();
         producto.setNombre("Isabel Allende Frappé");
         producto.setPrecio(new BigDecimal("3800"));
         producto.setStock(15);
         producto.setIsHot(false);
         
-        Productos guardado = repository.save(producto); //
+        Productos guardado = repository.save(producto);
 
-        repository.deleteById(guardado.getId()); //
+        repository.deleteById(guardado.getId());
 
-        Optional<Productos> resultado = repository.findById(guardado.getId()); //
-        assertFalse(resultado.isPresent()); //
+        Optional<Productos> resultado = repository.findById(guardado.getId());
+        assertFalse(resultado.isPresent());
     }
 }
