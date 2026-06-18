@@ -1,7 +1,6 @@
 package com.example.coffee.connect.service;
 
 import org.springframework.stereotype.Service;
-
 import com.example.coffee.connect.dto.ProductosDTO;
 import com.example.coffee.connect.model.Productos;
 import com.example.coffee.connect.repository.ProductoRepository;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
-
 import java.util.List;
 
 @Service
@@ -31,23 +29,23 @@ public class ProductosService {
         a.setStock(dto.getStock());
         a.setIsHot(dto.isHot()); 
         
-        return repo.save(a);
+        return repo.save(a); // Si tu repositorio se declara en ProductoRepository, esto compilará sin ningún error
     } 
 
-    //lista para ver los productos
+    // Lista para ver los productos
     public List<Productos> listar() {
         log.info("listar productos");
         return repo.findAll();
     }
 
-    //obtener el cafe por id
-    public Productos obtener (Long id) {
+    // Obtener el café por ID
+    public Productos obtener(Long id) {
         log.info("obtener producto", keyValue("id", id));
         return repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
     }
 
-    //actualizar producto 
-    public Productos actualizar(Long id , ProductosDTO dto) {
+    // Actualizar producto 
+    public Productos actualizar(Long id, ProductosDTO dto) {
         log.info("actualizar producto", keyValue("id", id));
         Productos a = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
         
@@ -60,8 +58,8 @@ public class ProductosService {
         return repo.save(a);
     }
 
-    //eliminar producto
-    public void eliminar (Long id){
+    // Eliminar producto
+    public void eliminar(Long id){
         log.warn("eliminar producto ", keyValue("id", id));
         if (!repo.existsById(id)) {
             throw new EntityNotFoundException("No se puede eliminar: No existe");
