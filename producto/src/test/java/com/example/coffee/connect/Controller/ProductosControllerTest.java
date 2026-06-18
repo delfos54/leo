@@ -1,10 +1,7 @@
 package com.example.coffee.connect.Controller;
 
-
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.http.MediaType;
 
 import com.example.coffee.connect.dto.ProductosDTO;
@@ -15,13 +12,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean; // ◄ Usamos MockBean estándar
+import org.springframework.boot.test.mock.mockito.MockBean; // ◄ Usamos el MockBean estándar unificado
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -35,10 +33,10 @@ public class ProductosControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockitoBean // 🚀 Cambiado a MockBean estándar
+    @MockBean // ◄ CORREGIDO: Unificado a @MockBean para evitar fallos de inicialización del contexto
     private ProductosService service;
 
-    @MockBean // 🚀 Cambiado a MockBean estándar
+    @MockBean // ◄ CORREGIDO: Mantenido en armonía con el mock anterior
     private JwtUtil jwtUtil;
 
     @Test
