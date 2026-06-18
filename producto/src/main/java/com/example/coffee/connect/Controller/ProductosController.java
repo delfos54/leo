@@ -1,5 +1,6 @@
 
 package com.example.coffee.connect.Controller;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
-
 
 import com.example.coffee.connect.dto.ApiResponse;
 import com.example.coffee.connect.dto.ProductosDTO;
@@ -37,13 +36,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductosController {
 
     private final ProductosService service;
-    @Operation(summary = "Crear un nuevo producto", description = "Permite registrar un nuevo ítem en el catálogo de cafetería.Requiere rol ADMIN.")
+
+    @Operation(summary = "Crear un nuevo producto", description = "Permite registrar un nuevo ítem en el catálogo de cafetería. Requiere rol ADMIN.")
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<Productos>> crear(@Valid @RequestBody ProductosDTO dto) {
-
         Productos p = service.crear(dto);
-
         return ResponseEntity.status(201).body(
                 ApiResponse.<Productos>builder()
                         .respuesta(true)
@@ -54,8 +52,7 @@ public class ProductosController {
     }
     @Operation(summary = "Listar productos", description = "Obtiene la lista de todos los productos en el catálogo.")
     @GetMapping
-    public  ResponseEntity<ApiResponse<List<Productos>>> listar() {
-
+    public ResponseEntity<ApiResponse<List<Productos>>> listar() {
         return ResponseEntity.ok(
                 ApiResponse.<List<Productos>>builder()
                         .respuesta(true)
@@ -67,14 +64,14 @@ public class ProductosController {
 
     @Operation(summary = "Obtener un producto por ID", description = "Retorna los detalles de un producto específico según su ID.")
     @GetMapping("/{id}")
-            public ResponseEntity<ApiResponse<EntityModel<Productos>>> obtener(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<EntityModel<Productos>>> obtener(@PathVariable Long id) {
         Productos p = service.obtener(id);
         EntityModel<Productos> recurso = EntityModel.of(p);
 
         recurso.add(linkTo(methodOn(ProductosController.class).obtener(id)).withSelfRel());
-        recurso.add(linkTo(methodOn(ProductosController.class).listar()).withRel("all")); // Enlace al listado general
-        recurso.add(linkTo(methodOn(ProductosController.class).actualizar(id, null)).withRel("update")); // Enlace a modificar
-        recurso.add(linkTo(methodOn(ProductosController.class).eliminar(id)).withRel("delete")); // Enlace a eliminar
+        recurso.add(linkTo(methodOn(ProductosController.class).listar()).withRel("all")); 
+        recurso.add(linkTo(methodOn(ProductosController.class).actualizar(id, null)).withRel("update")); 
+        recurso.add(linkTo(methodOn(ProductosController.class).eliminar(id)).withRel("delete")); 
 
         return ResponseEntity.ok(
                 ApiResponse.<EntityModel<Productos>>builder()
@@ -83,16 +80,12 @@ public class ProductosController {
                         .data(recurso)
                         .build()
         );
-
-        
     }
 
-
-
- @PutMapping("/{id}")
- @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<Productos>> actualizar(@PathVariable Long id, @Valid @RequestBody ProductosDTO dto) {
-    Productos p  = service.actualizar(id, dto);        
+        Productos p = service.actualizar(id, dto);        
         return ResponseEntity.ok(
                 ApiResponse.<Productos>builder()
                         .respuesta(true)
@@ -100,24 +93,23 @@ public class ProductosController {
                         .data(p)
                         .build()
         );   
-}
+    }
 
-@DeleteMapping("/{id}")
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-public ResponseEntity<ApiResponse<Object>> eliminar(@PathVariable Long id) {
-    service.eliminar(id);
-    return ResponseEntity.ok(
-            ApiResponse.<Object>builder()
-                    .respuesta(true)
-                    .mensaje("Producto eliminado")
-                    .build()
-    );
-}
-@GetMapping("/{id}/precio")
-public BigDecimal obtenerPrecio(@PathVariable Long id){
-    Productos p = service.obtener(id);
-    return p.getPrecio();
-}
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse<Object>> eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+        return ResponseEntity.ok(
+                ApiResponse.<Object>builder()
+                        .respuesta(true)
+                        .mensaje("Producto eliminado")
+                        .build()
+        );
+    }
 
-}   
-
+    @GetMapping("/{id}/precio")
+    public BigDecimal obtenerPrecio(@PathVariable Long id) {
+        Productos p = service.obtener(id);
+        return p.getPrecio();
+    }
+}
