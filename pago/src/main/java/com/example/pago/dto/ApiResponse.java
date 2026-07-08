@@ -18,4 +18,3 @@ public class ApiResponse<T> {
     private T data;
     private Object error;
 }
-

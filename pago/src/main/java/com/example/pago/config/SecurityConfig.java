@@ -21,10 +21,12 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                    // 🚀 CORREGIDO: No hay endpoints públicos aquí, todo requiere token válido
+                .authorizeHttpRequests(auth -> auth
+                    // Permitir acceso público a la documentación OpenAPI / Swagger
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs").permitAll()
+                    // Resto requiere autenticación
                     .anyRequest().authenticated()
-            )
+                )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

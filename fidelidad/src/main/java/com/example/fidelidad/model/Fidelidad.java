@@ -1,7 +1,5 @@
 package com.example.fidelidad.model;
 
-
-
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

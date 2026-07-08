@@ -1,7 +1,5 @@
 package com.example.fidelidad.config;
 
-
-
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 
@@ -32,6 +30,3 @@ public class OpenApiConfig {
                                         .bearerFormat("JWT"))); //
     }
 }
-
-
-

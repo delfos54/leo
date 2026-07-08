@@ -1,4 +1,5 @@
-package com.example.user.service; // ◄ Mantiene el paquete propio de tu módulo 'user'
+package com.example.user.service;
+
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
